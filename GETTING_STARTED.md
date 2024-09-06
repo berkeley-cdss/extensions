@@ -1,6 +1,6 @@
 # Getting Started
 
-If you'd like us to walk you through setup, feel free to email fuzailshakir@berkeley.edu or join the `#161-extension-bot` channel on EECS Crossroads. That said, all of this is self-serve, so you could follow this guide entirely by yourself if you'd like!
+If you have questions, check out the [FAQ](https://github.com/berkeley-cdss/extensions/blob/master/FAQ.md) or ask in the `#161-extensions` channel on EECS Crossroads.
 
 It takes ~15 minutes to onboard your class onto this tool, and that time pays off as soon as your first extension requests start rolling in :)
 
@@ -10,20 +10,20 @@ _Estimated Time: 5 minutes_
 
 You'll need to be a Slack admin in your workspace to follow these steps.
 
-1. Create a private Slack channel (ours is named `extension-bot`). Add anyone who's approved to manage/view accommodations and DSP information should be added to the channel.
-2. [Create a Slack webhook](https://api.slack.com/messaging/webhooks), and point it towards your newly created channel. Feel free to skip past all of the reading and follow these steps –
-   - Click the big green "Create your Slack App" button.
-   - Select "From scratch" and enter "ExtensionBot" as the name. Select your workspace.
+1. Create a Slack channel (ours is named `extension-bot`). Potentially sensitive student information may be accessible in this channel, so we recommend making the channel private and adding those who are approved to manage/view accommodations and DSP information to the channel.
+2. [Create a Slack webhook](https://api.slack.com/messaging/webhooks), and point it towards your newly created channel. Feel free to skip past all of the reading and follow these steps:
+   - Click "Create your Slack App".
+   - Select "From scratch" and enter a name. We named ours "ExtensionBot". Select your workspace.
    - Click "Incoming Webhooks" in the sidebar, scroll down, and create a new web hook.
-   - Save the URL. We'll need it later.
+   - Note the URL. We'll need it later.
 
 ### Part 2: Configuring Google Forms/Sheets
 
 _Estimated Time: 10 minutes_
 
-**Cloning the Form/Sheet**
+**Cloning the Form and Sheet**
 
-1. Make a copy of [this spreadsheet](https://docs.google.com/spreadsheets/d/1BabID1n6fPgeuuO4-1r3mkoQ9Nx5dquNwdsET75In1E/edit?usp=sharing). Make sure to rename it to "CS \_\_\_ SP22 Extensions Backend"
+1. Make a copy of [this spreadsheet](https://docs.google.com/spreadsheets/d/1BabID1n6fPgeuuO4-1r3mkoQ9Nx5dquNwdsET75In1E/edit?usp=sharing). Make sure to rename appropriately e.g. "DATA 8 FA24 Extensions Backend"
 2. Delete the “Form Responses” sheet within the spreadsheet.
 3. Share the spreadsheet with [cs-161-extensions@appspot.gserviceaccount.com](mailto:cs-161-extensions@appspot.gserviceaccount.com). This allows our hosted cloud function to read/write to your sheet. (If you're self-hosting, this should be your service account email.)
 4. Make a copy of [this form](https://docs.google.com/forms/d/1uc9NUwxLnfTc1Zlv0Dec1A1Jsu5UYR7-0K2kfTR0Zqs/edit). Make sure to rename it. Close the form template, so you don't accidentally edit it.
@@ -45,22 +45,25 @@ _Estimated Time: 10 minutes_
 
 **Configuring Roster**
 
-There isn't much you need to do to configure the roster! If you want to add your students here ahead of time, feel free to add a list of names, emails, and SID's. If you don't, students will be added "on-demand" (e.g. when a student submits an extension request). If a student submits several requests, their roster record will be updated in-place.
+The **Spreadsheet/Roster** tab can hold your entire roster or be configured "on-demand" (when a student submits an extension request). If a student submits several requests, their roster record will be updated in-place; no new roster record will be created.
 
-The `name` and `sid` columns are optional - feel free to delete them if you don't need them. The `notes` column is for your own use.
+If you'd like to add student emails (and optionally DSP status), feel free to. The `notes` column on this sheet is for your own use.
 
 **Configuring Assignments**
 
-9. On the **Spreadsheet/Assignments** tab:
-   - Each assignment should have a unique Assignment ID.
-   - Set a due date in YYYY-MM-DD format for each assignment, and a partner status (either "Yes" or "No").
-10. On the **Spreadsheet/Roster** tab:
+9. On the **Spreadsheet/Assignments** tab set up a row for each assignment:
+   - Enter the assignment name
+   - Choose a unique assignment ID
+   - Set a due date in YYYY-MM-DD format
+   - Set the partner status (either "Yes" or "No")
+   - Add a link to the Gradescope assignment if it has been created and you would like to use Flextensions to automatically input extensions to Gradescope. The link format should be like: https://www.gradescope.com/courses/COURSE_ID/assignments/ASSIGNMENT_ID/extensions. You can find the unique link for each assignment by clicking the "Extensions" tab on the left sidebar when you're viewing an assignment on Gradescope.
+     
+10. Ensure the following on the **Spreadsheet/Roster** tab:
 
-    - Each assignment should have a single column.
-    - The column headers should match the assignment ID's in the **Assignments** tab.
+    - Each assignment has a single column
+    - The column headers match the unique assignment ID's in the **Spreadsheet/Assignments** tab
 
-11. On the **Form**:
-    - Update the assignment options to match the names in the **Assignments** tab.
+11. On the **Google Form**, update the assignment options to match the names in the **Spreadsheet/Assignments** tab.
 
 **Configuring Form Questions**
 
