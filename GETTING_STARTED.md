@@ -56,32 +56,37 @@ If you'd like to add student emails (and optionally DSP status), feel free to. T
    - Choose a unique assignment ID
    - Set a due date in YYYY-MM-DD format
    - Set the partner status (either "Yes" or "No")
-   - Add a link to the Gradescope assignment if it has been created and you would like to use Flextensions to automatically input extensions to Gradescope. The link format should be like: https://www.gradescope.com/courses/COURSE_ID/assignments/ASSIGNMENT_ID/extensions. You can find the unique link for each assignment by clicking the "Extensions" tab on the left sidebar when you're viewing an assignment on Gradescope.
+   - Add a link to the Gradescope assignment if it has been created and you would like to use Flextensions to automatically input extensions to Gradescope. See Step 15 for more information.
      
 10. Ensure the following on the **Spreadsheet/Roster** tab:
 
     - Each assignment has a single column
     - The column headers match the unique assignment ID's in the **Spreadsheet/Assignments** tab
 
-11. On the **Google Form**, update the assignment options to match the names in the **Spreadsheet/Assignments** tab.
+11. On the **Google Form**, update the assignment options to match the assignment names in the **Spreadsheet/Assignments** tab.
 
 **Configuring Form Questions**
 
-12. If you'd like to edit any of the form question descriptions, feel free to do so. Make sure to check the **Form Questions** spreadsheet to ensure that the question/key pairings are valid; you may have to paste this formula into cell A2 if you see a red error message. `=TRANSPOSE('Form Responses'!A1:X1)`
+12. If you'd like to edit any of the Google form question descriptions, feel free to do so.  Once you've finalized the Google form, check the **Spreadsheet/Form Questions** tab to ensure that the question/key pairings are valid. You will likely need to paste this formula `=TRANSPOSE('Form Responses'!A1:X1)` into cell A2 if you don't see a valid mapping between the questions asked on the Google form and the variable names or see an error message like `#REF!`. If you need to make edits to this tab, you may rearrange the `keys` column, but you should ensure all variables are present.
 
 **Configuring Environment Variables**
 
-13. Finally, configure Environment Variables as desired - instructions are within the sheet! This is where you should paste your `SLACK_ENDPOINT` .
-    - The `SLACK_ENDPOINT_DEBUG` webhook is an optional configuration variable: it pipes all debug logs to a CS 161 internal Slack channel. Feel free to delete this row after your system is up and running!
-    - The `EMAIL_FROM` field can be any email, but it should be formatted as "Sender Name <some-email@berkeley.edu>".
+13. Finally, configure **Spreadsheet/Environment Variables** as desired.
+   - Rows 2 through 6 pertain to emails. The `EMAIL_FROM` field can be any email, but it should be formatted as "Sender Name <some-email@berkeley.edu>".
+   - Row 7 is where you should paste your `SLACK_ENDPOINT` .
+   - The `SLACK_ENDPOINT_DEBUG` webhook (row 8) is an optional configuration variable: it pipes all debug logs to a CS 161 internal Slack channel. Feel free to delete this row after your system is up and running!
+   - Rows 9 through 12 should be adjusted according to your preferences for auto approval.
+   - If you want anyone tagged on Slack when extension requests come in, add their Slack ID(s) to row 13.
+   - Update row 14 with a link for the spreadsheet you're currently editing.
+   - The remaining rows are if you'd like to integrate with Gradescope (see the next part).
 
 ### Part 3: Configuring Gradescope (Optional)
 
 *Estimated Time: 5 minutes*
 
-If you'd like your approved extensions to be reflected in Gradescope (using the assignment "extensions" feature), you'll need to configure a staff API account.
+If you'd like your approved extensions to be reflected in Gradescope (using the assignment "extensions" feature), you'll need to configure a staff account.
 
-14. Add `cs000-staff+api@berkeley.edu` (or another email address - typically an alias of your SPA email address) as an instructor to the current semester's Gradescope course.
-15. Sign in with that email (reset your password if you don't recieve an email from Gradescope when you're added).
-16. Paste the email/password combination in the `GRADESCOPE_EMAIL` and `GRADESCOPE_PASSWORD` environment variables.
-17. Add one or more comma-separated Gradescope assignment URL's to each assignment under the `gradescope` column of the "Assignments" sheet.
+14. Add an alias of your SPA email address as an instructor to the current semester's Gradescope course.
+15. You will likely need to reset your Gradescope password for that account. Note this down.
+16. Paste the email/password combination in the `GRADESCOPE_EMAIL` and `GRADESCOPE_PASSWORD` environment variables. Also set cell B15 on **Spreadsheet/Environment Variables** to "Yes". 
+17. Add Gradescope assignment URL's to each assignment under the `gradescope` column of the "Assignments" sheet.  The link format should be like: https://www.gradescope.com/courses/COURSE_ID/assignments/ASSIGNMENT_ID/extensions. You can find the unique link for each assignment by clicking the "Extensions" tab on the left sidebar when you're viewing an assignment on Gradescope.
