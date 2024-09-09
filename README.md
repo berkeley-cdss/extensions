@@ -122,7 +122,7 @@ If the extension does not warrant an approval (or staff need more information), 
 When an error occurs, staff should:
 
 1. Correct the error on the **Form Responses** sheet (or, if it was an internal error due to other data misconfiguration - e.g. missing assignments - correct the configuration).
-2. Select the **Reprocess** checkbox next to any form responses that weren't fully processed.
+2. Select the **Rerun** checkbox next to any form responses that weren't fully processed.
 3. Use the **Actions => Reprocess Form Submissions** menu item to reprocess the failed submissions.
 
 ---
@@ -131,7 +131,7 @@ When an error occurs, staff should:
 
 ![image-20220127110739789](README.assets/image-20220127110739789.png)
 
-If, during a student meeting (or through some other channel, like a Piazza post), staff would like to grant a student an extension on an assignment, staff should enter the number of days to extend the assignment by directly onto the student record on the **Roster**, and throw the student record in the queue for outbound emails. This is a natural "form bypass" case, where a form submission isn't required to grant a student an extension, but these specially-granted extensions are still tracked alongside the rest of the student's extension requests.
+If, during a student meeting (or through some other channel, like an Ed post), staff would like to grant a student an extension on an assignment, staff should enter the number of days to extend the assignment by directly onto the student record on the **Roster**, and add the student record in the queue for outbound emails. This is a natural "form bypass" case, where a form submission isn't required to grant a student an extension, but these specially-granted extensions are still tracked alongside the rest of the student's extension requests.
 
 ---
 
