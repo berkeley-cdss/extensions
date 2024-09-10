@@ -56,7 +56,7 @@ If you'd like to add student emails (and optionally DSP status), feel free to. T
    - Choose a unique assignment ID
    - Set a due date in YYYY-MM-DD format
    - Set the partner status (either "Yes" or "No")
-   - Add a link to the Gradescope assignment if it has been created and you would like to use Flextensions to automatically input extensions to Gradescope. See Step 15 for more information.
+   - Add a link to the Gradescope assignment if it has been created and you would like to use Flextensions to automatically input extensions to Gradescope. See Part 3 for more information.
      
 10. Ensure the following on the **Spreadsheet/Roster** tab:
 
