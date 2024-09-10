@@ -30,7 +30,7 @@ _Estimated Time: 10 minutes_
 5. On the form, in the "Responses" tab, configure the form responses to be written to the Extensions Backend spreadsheet.
    - This should create a new tab within the Extensions Backend sheet.
    - Rename the tab to “Form Responses”.
-6. **Set the header of column M of the Form Responses sheet to "Rerun"**. Then, select all of the rows of that column, and insert a checkbox using "Insert" => "Checkbox".
+6. **Set the header of the next empty column of the Form Responses sheet to "Rerun"**. (This will be column N if you do not add or delete questions from the form.) Then, select all of the rows of that column, and insert a checkbox using "Insert" => "Checkbox".
 
 **Configuring Apps Script**
 
