@@ -26,7 +26,7 @@ _Estimated Time: 10 minutes_
 1. Make a copy of [this spreadsheet](https://docs.google.com/spreadsheets/d/17u8VkAefOeiaW8ryMlC8kid8_HOhu3jN-VhXdYtU75s/edit?usp=sharing). Make sure to rename appropriately e.g. "DATA 8 FA24 Extensions Backend"
 2. Delete the “Form Responses” sheet within the spreadsheet.
 3. Share the spreadsheet with [extensions-sandbox@appspot.gserviceaccount.com](mailto:extensions-sandbox@appspot.gserviceaccount.com). This allows our hosted cloud function to read/write to your sheet. (If you're self-hosting, this should be your service account email.)
-4. Make a copy of [this form](https://docs.google.com/forms/d/1uc9NUwxLnfTc1Zlv0Dec1A1Jsu5UYR7-0K2kfTR0Zqs/edit). Make sure to rename it. Close the form template, so you don't accidentally edit it.
+4. Make a copy of [this form](https://docs.google.com/forms/d/11_ilehVDnTOpIDasEhKMP_Ljfni5JOdQcbioHVrs0_E/edit). Make sure to rename it. Close the form template, so you don't accidentally edit it.
 5. On the form, in the "Responses" tab, configure the form responses to be written to the Extensions Backend spreadsheet.
    - This should create a new tab within the Extensions Backend sheet.
    - Rename the tab to “Form Responses”.
