@@ -36,7 +36,7 @@ _Estimated Time: 10 minutes_
 
 7. On the **Spreadsheet**, open the **Extensions => Apps Script** menu option.
 
-   - Rename the script to "CS \_\_\_\_ SP22 Extension Requests Script".
+   - Rename the script to "DATA 000 FA00 Extension Requests Script". 
 
    - Click on "Triggers" in the sidebar (the little clock icon).
 
