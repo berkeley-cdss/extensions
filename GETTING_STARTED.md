@@ -86,7 +86,7 @@ If you'd like to add student emails (and optionally DSP status), feel free to. T
 
 If you'd like your approved extensions to be reflected in Gradescope (using the assignment "extensions" feature), you'll need to configure a staff account.
 
-14. Add an alias of your SPA email address as an instructor to the current semester's Gradescope course.
-15. You will likely need to reset your Gradescope password for that account. Note this down.
-16. Paste the email/password combination in the `GRADESCOPE_EMAIL` and `GRADESCOPE_PASSWORD` environment variables. Also set cell B15 on **Spreadsheet/Environment Variables** to "Yes". 
-17. Add Gradescope assignment URL's to each assignment under the `gradescope` column of the "Assignments" sheet.  The link format should be like: https://www.gradescope.com/courses/COURSE_ID/assignments/ASSIGNMENT_ID/extensions. You can find the unique link for each assignment by clicking the "Extensions" tab on the left sidebar when you're viewing an assignment on Gradescope.
+1. Add an alias of your SPA email address as an instructor to the current semester's Gradescope course.
+2. You will likely need to reset your Gradescope password for that account. Note this down.
+3. Paste the email/password combination in the `GRADESCOPE_EMAIL` and `GRADESCOPE_PASSWORD` environment variables. Also set cell B15 on **Spreadsheet/Environment Variables** to "Yes". 
+4. Add Gradescope assignment URL's to each assignment under the `gradescope` column of the "Assignments" sheet.  The link format should be like: https://www.gradescope.com/courses/COURSE_ID/assignments/ASSIGNMENT_ID/extensions. You can find the unique link for each assignment by clicking the "Extensions" tab on the left sidebar when you're viewing an assignment on Gradescope.
