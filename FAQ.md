@@ -7,36 +7,40 @@ This page will list out quick responses, common bugs and their fixes, as well as
 
 # FAQs
 ## While getting started
+* [I want to ask a different set of questions on the Google form](#form-questions)
 * [Do I need to ask if students are enrolled in DSP?](#do-i-need-to-ask-if-students-are-enrolled-in-dsp)
 * [I want to modify the email sent to students!](#modify-email)
 ## After walking through [GETTING_STARTED.md](https://github.com/cs161-staff/extensions/blob/master/GETTING_STARTED.md)
+* [I want to add custom comments without copy-pasting](#custom-comments)
 * [The Form Responses tab is filling, but the Roster tab is not](#the-form-responses-tab-is-filling-but-the-roster-tab-is-not)
 * [I need to change the name of the slack channel](#i-need-to-change-the-name-of-the-slack-channel)
-* [I want to add custom comments without copy-pasting](#I-want-to-add-custom-comments-without-copy-pasting)
+* [People are not being correctly tagged in the Slack channel](#slack-tag)
 ## Error messages
 * ["Student \<name\> responded '' to DSP question in extension request, but is not marked for DSP approval on the roster. Please investigate!"](#snr)
 * ["Error: ('An error occurred while sending an email:', Exception(... Insufficient system storage', 'cs162ta@cs162.eecs.berkeley.edu'))"](#cs162)
 * ["\[https://www.gradescope.com/courses/<...> \] \[2\] failed to extend assignment in Gradescope: internal Gradescope error occurred (An error occurred in a request to Gradescope servers. Details: Status Code: 401 Error: could not load assignment <...>"](#gradescopeerr)
 
+
+<div id="form-questions"></div>
+
+### I want to ask a different set of questions on the Google form.
+>It is possible to edit the Google form to skip some of the questions on the template form, ask the questions in a different way, or ask additional  questions. We recommend keeping all questions from the template form in your Google form because the following keys on the **Spreadsheet/Form Questions** tab are required for Flextensions to work: `timestamp`, `email`, `is_dsp`, `knows_assignments`, `assignments`, `days`, `reason`, `documentation`, `has_partner`, `partner_email`, and `game_plan`. To skip a question, place that question in a section of the form that students will never reach according to [form logic](https://support.google.com/appsheet/answer/10107390?hl=en#:~:text=Conditional%20branching%20in%20Google%20Forms&text=This%20is%20helpful%20to%20remember,navigation%20paths%20for%20each%20option.). Then, ensure that the question-key mapping on the **Spreadsheet/Form Questions** tab is still valid.
+
+>Changing the wording of a question, rearranging the order of questions, or including additional questions will not impact performance when the keys on the **Spreadsheet/Form Questions** tab are correctly mapped to questions. Once you've finished creating your form, have linked it to the Extensions Backend Spreedsheet and renamed the tab to "Form Responses", paste `=TRANSPOSE('Form Responses'!A1:X1)` into cell A2 of the **Spreadsheet/Form Questions** tab. Adjust the "key" column, ensuring that all required keys (listed above) are present. If you have added questions you may choose a unique key name for each or you may set the key name(s) to `ignore` (as you should do for "Rerun"). Do not re-use the key names of the required keys.
+
 ### Do I need to ask if students are enrolled in DSP?
->So your course's extension policy is not different for students enrolled in DSP, no worries! Unfortunately, at this point in time, the script relies on there being a DSP question asked in the form. That being said, the example form as it currenly is prevents students from seeing the question, since 161 no longer uses DSP data to decide how to grant exensions. So you *must* keep this question in the google form, but students don't have to respond to it. See []() for more details. 
+>The scripts require the `is_dsp` key to in the **Spreadsheet/Form Questions** tab to work. The recommended way to retain this key is to keep the DSP status question in the Google form and using [form logic](https://support.google.com/appsheet/answer/10107390?hl=en#:~:text=Conditional%20branching%20in%20Google%20Forms&text=This%20is%20helpful%20to%20remember,navigation%20paths%20for%20each%20option.) to place this question in a section of the form that students will never reach.
 
 <div id="modify-email"></div>
 
-### I want to modify the email sent to students!
+### I want to modify the email sent to students.
 >You can use the built in method of the email column comments! Check out [an example here.](https://docs.google.com/spreadsheets/d/17-NKHpKrdW-1t1SoxMXHBvfF-Dery6lfefhPUW62WQM/edit?usp=sharing)
 
 >Feel free to [fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) this repo to create your own email template!
 
-### The Form Responses tab is filling, but the Roster tab is not
->One really common cause of this is forgetting to share the google sheet with the google api: cs-161-extensions@appspot.gserviceaccount.com (Part 2, step 3 of Getting Started)
+<div id="custom-comments"></div>
 
->If you've done that but it still isn't working, another possible fix is to try filling the student email column with the entire remaining roster.
-
-### I need to change the name of the slack channel
->No problem! Changing the name of the slack channel where the webhook points will not affect it. You should be able to do this with no consequences.
-
-### I want to add custom comments without copy-pasting
+### I want to add custom comments without copy-pasting.
 >You can take advantage of google sheets to do this! On a separate tab, type out any comments you want to be able to toggle off and on for any given email. 
 ![image-20240117-1](FAQ.assets/image-20240117-1.png)
 
@@ -46,6 +50,19 @@ This page will list out quick responses, common bugs and their fixes, as well as
 >To include the comment, toggle on the check box. If the checkbox is unchecked, the formula above will include an empty string instead of the comment.
 
 <div id="snr"></div>
+
+### The Form Responses tab is filling, but the Roster tab is not.
+>Likely, you forgot to share the Google sheet with the Google api: `extensions-sandbox@appspot.gserviceaccount.com` (Part 2, step 3 of Getting Started)
+
+>If you've done that but it still isn't working, another possible fix is to fill the student email column with the entire remaining roster on the **Spreadsheet/Roster** tab.
+
+### I need to change the name of the Slack channel.
+>No problem! Changing the name of the Slack channel where the webhook points will not affect it. You should be able to do this with no consequences.
+
+<div id="slack-tag"></div>
+
+### People are not being correctly tagged in the Slack channel.
+>Slack User IDs are workspace specific, so make sure you're copying Slack User IDs from the Slack workspace with the channel linked to your Slack webhook.
 
 ### "Student \<name\> responded '' to DSP question in extension request, but is not marked for DSP approval on the roster. Please investigate!" 
 
