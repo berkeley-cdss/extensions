@@ -139,16 +139,6 @@ If, during a student meeting (or through some other channel, like an Ed post), s
 
 ---
 
-# Configuration
-
-All configuration values (e.g. API keys, email options) are stored on the spreadsheet itself, in the **"Environment Variable"** tab.
-
-![image-20220127111221248](README.assets/image-20220127111221248.png)
-
-Assignments may be dynamically configured as well, through the **"Assignments"** tab.
-
-![image-20220127111424320](README.assets/image-20220127111424320.png)
-
 # Edge Cases
 
 **<u>In what cases are extensions flagged for human approval?</u>**
