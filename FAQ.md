@@ -1,5 +1,5 @@
-[!WARNING]
-This site is under construction and is subject to change while this message is still visible. 
+[WARNING]
+This document is subject to change while this message is still visible. 
 
 This page will list out quick responses, common bugs and their fixes, as well as workflow suggestions. 
 
@@ -9,16 +9,18 @@ This page will list out quick responses, common bugs and their fixes, as well as
 ## While getting started
 * [I want to ask a different set of questions on the Google form](#form-questions)
 * [Do I need to ask if students are enrolled in DSP?](#do-i-need-to-ask-if-students-are-enrolled-in-dsp)
-* [I want to modify the email sent to students!](#modify-email)
+* [I want to modify the email sent to students](#modify-email)
+* [Are there any additional guides or other documentation I can look at?](#add-doc)
 ## After walking through [GETTING_STARTED.md](https://github.com/cs161-staff/extensions/blob/master/GETTING_STARTED.md)
 * [I want to add custom comments without copy-pasting](#custom-comments)
 * [The Form Responses tab is filling, but the Roster tab is not](#the-form-responses-tab-is-filling-but-the-roster-tab-is-not)
-* [I need to change the name of the slack channel](#i-need-to-change-the-name-of-the-slack-channel)
+* [I want to change the name of the slack channel](#i-need-to-change-the-name-of-the-slack-channel)
 * [People are not being correctly tagged in the Slack channel](#slack-tag)
 ## Error messages
 * ["Student \<name\> responded '' to DSP question in extension request, but is not marked for DSP approval on the roster. Please investigate!"](#snr)
 * ["Error: ('An error occurred while sending an email:', Exception(... Insufficient system storage', 'cs162ta@cs162.eecs.berkeley.edu'))"](#cs162)
 * ["\[https://www.gradescope.com/courses/<...> \] \[2\] failed to extend assignment in Gradescope: internal Gradescope error occurred (An error occurred in a request to Gradescope servers. Details: Status Code: 401 Error: could not load assignment <...>"](#gradescopeerr)
+* ["SyntaxError: Unexpected token 'u', 'upstream r' ... is not valid JSON" on Google Sheet](#sheet-syntax-error)
 
 
 <div id="form-questions"></div>
@@ -38,6 +40,14 @@ This page will list out quick responses, common bugs and their fixes, as well as
 
 >Feel free to [fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) this repo to create your own email template!
 
+<div id="add-doc"></div>
+### Are there any additional guides or other documentation I can look at?
+>Yes. Please note that these are not complete guides or documentation. Also note that these may contain links to CS 161's extension version.
+
+>[Jordan's Fa23 tips and tricks](https://docs.google.com/document/d/1_BOKVyhKW8_-tmgtV5qpVAi33aKYKpKd1WmnPCzsYOg/edit?usp=sharing)
+
+>[Data 100 Documentation](https://docs.google.com/document/d/1fL-y164X4peC08uva3G9q06VzDQE9fVqAu9m5ipIScI/edit?usp=sharing)
+
 <div id="custom-comments"></div>
 
 ### I want to add custom comments without copy-pasting.
@@ -56,7 +66,7 @@ This page will list out quick responses, common bugs and their fixes, as well as
 
 >If you've done that but it still isn't working, another possible fix is to fill the student email column with the entire remaining roster on the **Spreadsheet/Roster** tab.
 
-### I need to change the name of the Slack channel.
+### I want to change the name of the Slack channel.
 >No problem! Changing the name of the Slack channel where the webhook points will not affect it. You should be able to do this with no consequences.
 
 <div id="slack-tag"></div>
@@ -84,6 +94,11 @@ This page will list out quick responses, common bugs and their fixes, as well as
 ### "[https://www.gradescope.com/courses/<...> \] \[2\] failed to extend assignment in Gradescope: internal Gradescope error occurred (An error occurred in a request to Gradescope servers. Details: Status Code: 401 Error: could not load assignment <...>)"
 >This means there is some error within Gradescope itself. It could be caused by your Gradescope environment variables being incorrect or not leading to an account with permissions to edit assignments
 
->Ex: Your spa has been aliased to create a gradescope account. The password is incorrect on Environment Variables.
+>Example: Your SPA has been aliased to create a gradescope account. The password is incorrect on Environment Variables.
 
 >Ex: The environment variables are correct, but your spa gradescope account is a student in the gradescope (possible if someone resets all accounts on the gradescope course)
+
+
+<div id="sheet-syntax-error"></div>
+### "SyntaxError: Unexpected token 'u', 'upstream r' ... is not valid JSON" on Google Sheet
+>This error typically arises when there are many emails in the queue. If you just continue to re-run the "Dispatch Emails" script all extension emails/Gradescope extensions will be processed eventually.
