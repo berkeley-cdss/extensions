@@ -17,14 +17,18 @@ The CS 161 Extensions Pipeline is a lightweight framework designed for tracking,
 
 At a high level, this pipeline consists of:
 
-- A **[Google Form](https://docs.google.com/forms/d/e/1FAIpQLSfrlZXWRdllpkllha9Abfib57qJcKrRfeHHW3kSmA2b3FZ_QA/viewform?usp=sf_link)** that students submit extension requests to.
-- A **[Google Sheet](https://docs.google.com/spreadsheets/d/1BabID1n6fPgeuuO4-1r3mkoQ9Nx5dquNwdsET75In1E/edit#gid=790260459)** that collects student extension requests and tracks all extension requests in a master roster.
-- A **Google Cloud Function** that contains core business logic that:
+- A **[Google Form](https://docs.google.com/forms/d/e/1FAIpQLSdcVhd9WIXn0uegFEX8QVTEEre4oqv5oqQc6bXkNPkG_VIl7g/viewform?usp=sf_link)** that students submit extension requests to.
+- A **[Google Sheet](https://docs.google.com/spreadsheets/d/17u8VkAefOeiaW8ryMlC8kid8_HOhu3jN-VhXdYtU75s/edit?usp=sharing)** that collects student extension requests and tracks all extension requests in a master roster.
+- **Google Cloud Functions** that contains core business logic that:
   - Receives form data through a simple **Google Apps Script** trigger.
   - Process form data in combination with a student's "record" (which includes DSP status and prior extension requests) to enter either an auto-approval or manual-approval flow.
   - Sends updates to staff through a **Slack Webhook**, enabling simple internal discussion of student cases through Slack threads.
-  - Sends updates to students through the **CS 162 Mailserver** via **CS 61A's RPC Interface**.
+  - Sends updates to students through [bCOP](https://berkeley.service-now.com/kb_view.do?sysparm_article=KB0011937)
   - Optionally publishes assignment extensions to one or more **Gradescope** assignments.
+ 
+This fork of the CS 161 extensions pipeline is managed by Seamless Learning and CDSS staff. There are slight differences between CS 161's version and this version, including which Google Cloud Functions are used.
+
+This README is useful to see how the pipeline works for students and staff. See [GETTING_STARTED.md](GETTING_STARTED.md) to set up the pipeline for your class.
 
 # Background
 
@@ -56,15 +60,15 @@ The CS 161 Extension Pipeline addresses all of these challenges, significantly *
 
 # Our Pipeline: Student Workflow
 
-Students request an extension through a Google Form (see an example [here](https://docs.google.com/forms/d/e/1FAIpQLSfrlZXWRdllpkllha9Abfib57qJcKrRfeHHW3kSmA2b3FZ_QA/viewform?usp=sf_link)).
+Students request an extension through a Google Form (see an example [here](https://docs.google.com/forms/d/e/1FAIpQLSdcVhd9WIXn0uegFEX8QVTEEre4oqv5oqQc6bXkNPkG_VIl7g/viewform?usp=sf_link)).
 
 **If a student knows which assignments they want to request an extension on,** then they're prompted to select from a list of assignments, and provide a number of days for each extension. They can either enter a single number (which will apply to all assignments that they select), or enter comma-separated numbers (to allow them to request a different number of days for different assignments).
 
 ![image-20220127093941023](README.assets/image-20220127093941023.png)
 
-**If a student's working with one or more partners**, then they're asked to enter their partners' emails and SID's (comma-separated). Their partner(s) will be included in extensions for any assignments that they select which are marked as partner projects.
+**If a student's working with one or more partners**, then they're asked to enter their partners' emails and SIDs (comma-separated). Their partner(s) will be included in extensions for any assignments that they select which are marked as partner projects.
 
-**If a student doesn't know what assignment they need an extension on,** they can request a meeting with a TA. We've seen this happen for students who're in extenuating circumstances, and just need to talk through their situation before deciding upon a specific request.
+**If a student doesn't know what assignment they need an extension on,** they can request a meeting with a TA. We've seen this happen for students who have extenuating circumstances, and just need to talk through their situation before deciding upon a specific request.
 
 **If a student's a DSP student with an accommodation for assignment extensions,** they can declare that on the form. (We recommend that all students who fall under this category receive auto-approvals for extension requests fewer than 7 days.)
 
@@ -77,7 +81,7 @@ Students request an extension through a Google Form (see an example [here](https
 
 # Our Pipeline: Staff Workflow
 
-Staff view all extensions on a master spreadsheet, with two main tabs: a **Form Responses** tab, which contains all form responses from students, and a **Roster** tab, which contains a list of all students in the course, with a column for each assignment. The **Roster** looks like this:
+Staff view all extensions on a master spreadsheet, with two main tabs: a **Form Responses** tab, which contains all form responses from students, and a **Roster** tab, which contains a list of all students in the course, with a column for each assignment. The other tabs are used to set up the pipeline and likely only need to be touched during set up. The **Roster** is color coded and looks like this:
 
 ![image-20220127110217827](README.assets/image-20220127110217827.png)
 
@@ -89,7 +93,7 @@ When an extension request comes in, staff first receive a Slack message in a pri
 
 ![image-20220127095857467](README.assets/image-20220127095857467.png)
 
-When an extension is automatically approved, staff don't need to do anything!
+When an extension is automatically approved, staff don't need to do anything! 
 
 ---
 
@@ -145,7 +149,7 @@ Assignments may be dynamically configured as well, through the **"Assignments"**
 
 ![image-20220127111424320](README.assets/image-20220127111424320.png)
 
-# Edge Cases & FAQ's
+# Edge Cases
 
 **<u>In what cases are extensions flagged for human approval?</u>**
 
@@ -159,31 +163,22 @@ All other cases are auto-approved! [See here for the logic that handles these ca
 
 **<u>How do I make it so that all extensions (regardless of status) require manual approval?</u>**
 
-If you want tighter control over what's approved, set `AUTO_APPROVE_THRESHOLD` to `0` and `AUTO_APPROVE_THRESHOLD_DSP` to `0`. It doesn't matter what you set `AUTO_APPROVE_ASSIGNMENT_THRESHOLD` to.
+If you want tighter control over what's approved, set `AUTO_APPROVE_THRESHOLD` to `0` and `AUTO_APPROVE_THRESHOLD_DSP` to `0`. In this case, it doesn't matter what you set `AUTO_APPROVE_ASSIGNMENT_THRESHOLD` to.
 
 **<u>What if a student submits an extension request with one or more partners?</u>**
 
 Any requested extensions for assignments that are "partner" assignments will apply to the designated partner(s) as well as the student. Both student records will be updated on the **Roster**, and the logic for approval will apply to all partners (e.g. if Partner A submits the form and Partner B has a "work-in-progress" record, then the extension as a whole will be flagged for manual approval).
 
+**<u>Wait, I still have to update the student's due date in OKPY/Gradescope/Prarielearn so that they'll be able to turn in their assignments late, right?</u>**
+
+You could do this (manually) after each extension request, if you'd like. Alternatively, you could set the "late" due date on these assignments to the end of the semester, and use the extension data on the **Roster** during grade compilation (this is what CS 161 & CS 61C do). Students will see their assignments marked as "late", but they'll be able to use the email they received as proof of their granted extension, just in case they notice inconsistencies in their grade reports.
+
+If you're using Gradescope, you can configure the pipeline to input extensions on Gradescope automatically.
+
 **<u>What happens if this thing internally combusts in the middle of the semester?</u>**
 
 While unlikely, this is a very simple failover case: just process form submissions into the **Roster** spreadsheet manually, and send templated emails through something like YAMM.
 
-**<u>Wait, I still have to update the student's due date in OKPY/Gradescope/PL so that they'll be able to turn in their assignments late, right?</u>**
-
-You could do this (manually) after each extension request, if you'd like. Alternatively, you could set the "late" due date on these assignments to the end of the semester, and use the extension data on the **Roster** during grade compilation (this is what CS 161 & CS 61C do). Students will see their assignments marked as "late", but they'll be able to use the email they received as proof of their granted extension, just in case they notice inconsistencies in their grade reports.
-
 **<u>What about long-term maintenance?</u>**
 
 Due to the simplicity of this project's architecture (no frontend, configuration is entirely dynamic, etc.), we don't anticipate this project needing a lot of long-term maintenance! And feature requests are simple to add, since the code is well-documented with Python class abstractions.
-
-**<u>Do I need to add all students to the roster at the beginning of the semester?</u>**
-
-No, you don't! This tool adds students to the roster on-demand (e.g. when they submit an extension request). The Google Form collects UC Berkeley emails by default, which is a robust method for identifying students and matching them to an internal CalCentral/grading roster at the end of the semester. That said, it may be useful to pre-populate rows for all students with DSP accomodations, so you have a record of who's approved for accomodations when processing extension requests.
-
-**<u>What if I want to change an assignment deadline after extension requests have already come in?</u>**
-
-You can handle this in any way that you'd like! Two common approaches –
-
-1. Clear out previously-assigned extension requests, and email all students who had requested an extension to re-submit an extension if they need more days past the extended deadline. To clear out existing requests, just clear the assignment column on the **Roster.**
-2. Apply all current extension requests to the new deadline. For this, update the deadline in the **Assignments** tab, filter the **Roster** to all students with an extension request for the assignment, and add all rows to the email queue; then, dispatch emails. All students who requested an extension will receive a new email with an extended deadline that's adjusted to the new deadline.
