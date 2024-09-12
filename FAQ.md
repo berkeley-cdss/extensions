@@ -11,10 +11,12 @@ This page will list out quick responses, common bugs and their fixes, as well as
 * [Do I need to ask if students are enrolled in DSP?](#do-i-need-to-ask-if-students-are-enrolled-in-dsp)
 * [I want to modify the email sent to students](#modify-email)
 * [Are there any additional guides or other documentation I can look at?](#add-doc)
+* [Do I need to add all students to the roster at the beginning of the semester?](#roster)
+* [What if I want to change an assignment deadline after extension requests have already come in?](#change-deadline)
 ## After walking through [GETTING_STARTED.md](https://github.com/cs161-staff/extensions/blob/master/GETTING_STARTED.md)
 * [I want to add custom comments without copy-pasting](#custom-comments)
 * [The Form Responses tab is filling, but the Roster tab is not](#the-form-responses-tab-is-filling-but-the-roster-tab-is-not)
-* [I want to change the name of the slack channel](#i-need-to-change-the-name-of-the-slack-channel)
+* [I want to change the name of the slack channel](#i-want-to-change-the-name-of-the-slack-channel)
 * [People are not being correctly tagged in the Slack channel](#slack-tag)
 ## Error messages
 * ["Student \<name\> responded '' to DSP question in extension request, but is not marked for DSP approval on the roster. Please investigate!"](#snr)
@@ -41,12 +43,24 @@ This page will list out quick responses, common bugs and their fixes, as well as
 >Feel free to [fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) this repo to create your own email template!
 
 <div id="add-doc"></div>
+
 ### Are there any additional guides or other documentation I can look at?
 >Yes. Please note that these are not complete guides or documentation. Also note that these may contain links to CS 161's extension version.
-
 >[Jordan's Fa23 tips and tricks](https://docs.google.com/document/d/1_BOKVyhKW8_-tmgtV5qpVAi33aKYKpKd1WmnPCzsYOg/edit?usp=sharing)
-
 >[Data 100 Documentation](https://docs.google.com/document/d/1fL-y164X4peC08uva3G9q06VzDQE9fVqAu9m5ipIScI/edit?usp=sharing)
+
+<div id="roster"></div>
+
+### Do I need to add all students to the roster at the beginning of the semester?
+
+>No, you don't! This tool adds students to the roster on-demand (e.g. when they submit an extension request). The Google Form collects UC Berkeley emails by default, which is a robust method for identifying students and matching them to an internal CalCentral/grading roster at the end of the semester. That said, it may be useful to pre-populate rows for all students with DSP accomodations, so you have a record of who's approved for accomodations when processing extension requests.
+
+<div id="change-deadline"></div>
+
+### What if I want to change an assignment deadline after extension requests have already come in?
+>You can handle this in any way that you'd like! Two common approaches –
+> 1. Clear out previously-assigned extension requests, and email all students who had requested an extension to re-submit an extension if they need more days past the extended deadline. To clear out existing requests, just clear the assignment column on the **Roster.**
+> 2. Apply all current extension requests to the new deadline. For this, update the deadline in the **Assignments** tab, filter the **Roster** to all students with an extension request for the assignment, and add all rows to the email queue; then, dispatch emails. All students who requested an extension will receive a new email with an extended deadline that's adjusted to the new deadline.
 
 <div id="custom-comments"></div>
 
