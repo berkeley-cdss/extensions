@@ -3,8 +3,6 @@ This document is subject to change while this message is still visible.
 
 This page will list out quick responses, common bugs and their fixes, as well as workflow suggestions. 
 
-[Jordan's Fa23 tips and tricks](https://docs.google.com/document/d/1_BOKVyhKW8_-tmgtV5qpVAi33aKYKpKd1WmnPCzsYOg/edit?usp=sharing)
-
 # FAQs
 ## While getting started
 * [I want to ask a different set of questions on the Google form](#form-questions)
