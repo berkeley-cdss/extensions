@@ -18,7 +18,7 @@ The CS 161 Extensions Pipeline is a lightweight framework designed for tracking,
 At a high level, this pipeline consists of:
 
 - A **[Google Form](https://docs.google.com/forms/d/e/1FAIpQLSdcVhd9WIXn0uegFEX8QVTEEre4oqv5oqQc6bXkNPkG_VIl7g/viewform?usp=sf_link)** that students submit extension requests to.
-- A **[Google Sheet](https://docs.google.com/spreadsheets/d/17u8VkAefOeiaW8ryMlC8kid8_HOhu3jN-VhXdYtU75s/edit?usp=sharing)** that collects student extension requests and tracks all extension requests in a master roster.
+- A **[Google Sheet](https://docs.google.com/spreadsheets/d/17u8VkAefOeiaW8ryMlC8kid8_HOhu3jN-VhXdYtU75s/edit?usp=sharing)** that collects student extension requests and tracks all extension requests in a roster.
 - **Google Cloud Functions** that contains core business logic that:
   - Receives form data through a simple **Google Apps Script** trigger.
   - Process form data in combination with a student's "record" (which includes DSP status and prior extension requests) to enter either an auto-approval or manual-approval flow.
@@ -26,7 +26,7 @@ At a high level, this pipeline consists of:
   - Sends updates to students through [bCOP](https://berkeley.service-now.com/kb_view.do?sysparm_article=KB0011937)
   - Optionally publishes assignment extensions to one or more **Gradescope** assignments.
  
-This fork of the CS 161 extensions pipeline is managed by Seamless Learning and CDSS staff. There are slight differences between CS 161's version and this version, including which Google Cloud Functions are used.
+This fork of the CS 161 extensions pipeline is managed by Seamless Learning and UC Berkeley CDSS staff. There are slight differences between CS 161's version and this version, including which Google Cloud Functions are used.
 
 This README is useful to see how the pipeline works for students and staff. See [GETTING_STARTED.md](GETTING_STARTED.md) to set up the pipeline for your class.
 
@@ -66,11 +66,11 @@ Students request an extension through a Google Form (see an example [here](https
 
 ![image-20220127093941023](README.assets/image-20220127093941023.png)
 
-**If a student's working with one or more partners**, then they're asked to enter their partners' emails and SIDs (comma-separated). Their partner(s) will be included in extensions for any assignments that they select which are marked as partner projects.
+**If a student is working with one or more partners**, then they're asked to enter their partners' emails and SIDs (comma-separated). Their partner(s) will be included in extensions for any assignments that they select which are marked by course staff as partner projects.
 
 **If a student doesn't know what assignment they need an extension on,** they can request a meeting with a TA. We've seen this happen for students who have extenuating circumstances, and just need to talk through their situation before deciding upon a specific request.
 
-**If a student's a DSP student with an accommodation for assignment extensions,** they can declare that on the form. (We recommend that all students who fall under this category receive auto-approvals for extension requests fewer than 7 days.)
+**If a student is a DSP student with an accommodation for assignment extensions,** they can declare that on the form. (We recommend that all students who fall under this category receive auto-approvals for extension requests fewer than 7 days.)
 
 **When a student's request has been approved (either manually or automatically),** students receive a templated email with their updated assignment deadlines. ![image-20220127094604714](README.assets/image-20220127094604714.png)
 
@@ -81,7 +81,7 @@ Students request an extension through a Google Form (see an example [here](https
 
 # Our Pipeline: Staff Workflow
 
-Staff view all extensions on a master spreadsheet, with two main tabs: a **Form Responses** tab, which contains all form responses from students, and a **Roster** tab, which contains a list of all students in the course, with a column for each assignment. The other tabs are used to set up the pipeline and likely only need to be touched during set up. The **Roster** is color coded and looks like this:
+Staff view all extensions on a spreadsheet, with two main tabs: a **Form Responses** tab, which contains all form responses from students, and a **Roster** tab, which contains a list of all students in the course, with a column for each assignment. The other tabs are used to set up the pipeline and likely only need to be touched during set up. The **Roster** is color coded and looks like this:
 
 ![image-20220127110217827](README.assets/image-20220127110217827.png)
 
@@ -148,6 +148,7 @@ These cases are flagged for human approval:
 - The student requests a large number of extension days for any single assignment. This threshold is `AUTO_APPROVE_THRESHOLD` and `AUTO_APPROVE_THRESHOLD_DSP` for students with DSP accommodations for assignment extensions.
 - The student requests extensions for a large number of assignments. This threshold is `AUTO_APPROVE_ASSIGNMENT_THRESHOLD`.
 - The **student record** has "work-in-progress" (e.g. the row on the roster is red or yellow - the student either has an existing pending request or ongoing student meeting).
+- The student requests an extension after 11:59 PM on the assignment due date listed on **Spreadsheet/Assignments**.
 
 All other cases are auto-approved! [See here for the logic that handles these cases.](https://github.com/cs161-staff/extensions/blob/master/src/handle_form_submit.py#L63)
 
