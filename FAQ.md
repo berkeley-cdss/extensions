@@ -112,5 +112,6 @@ This page will list out quick responses, common bugs and their fixes, as well as
 
 
 <div id="sheet-syntax-error"></div>
+
 ### "SyntaxError: Unexpected token 'u', 'upstream r' ... is not valid JSON" on Google Sheet
 >This error typically arises when there are many emails in the queue. If you just continue to re-run the "Dispatch Emails" script all extension emails/Gradescope extensions will be processed eventually.
