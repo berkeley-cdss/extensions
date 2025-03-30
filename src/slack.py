@@ -17,13 +17,18 @@ class SlackManager:
 
     def __init__(self) -> None:
         self.webhooks: List[WebhookClient] = []
-        self.webhooks.append(WebhookClient(Environment.get("SLACK_ENDPOINT")))
         self.warnings = []
         self.silent = False
 
+        if Environment.contains("SLACK_ENDPOINT"):
+            self.webhooks.append(WebhookClient(Environment.get("SLACK_ENDPOINT")))
         if Environment.contains("SLACK_ENDPOINT_DEBUG"):
             if Environment.get("SLACK_ENDPOINT_DEBUG") != Environment.get("SLACK_ENDPOINT"):
                 self.webhooks.append(WebhookClient(Environment.get("SLACK_ENDPOINT_DEBUG")))
+        # after Slack configuration if there is no webhook then suppress any Slack action
+        if not self.webhooks:
+            # TODO: send warning that no slack endpoint is set up, printing log to GCP instead
+            self.silent = True
 
     def suppress(self):
         self.silent = True
@@ -65,6 +70,7 @@ class SlackManager:
 
     def send_message(self, message: str) -> None:
         if self.silent:
+            # TODO: configure gcp log instead
             print("\n" + ("#" * 30) + "\n" + message.strip() + "\n" + "#" * 30)
             return
 
@@ -108,6 +114,7 @@ class SlackManager:
             message += self.get_warnings()
 
         if self.silent:
+            # TODO: configure gcp log instead
             print("\n" + ("#" * 30) + "\n" + message.strip() + "\n" + "#" * 30)
             return
 

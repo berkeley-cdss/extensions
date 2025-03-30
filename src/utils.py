@@ -51,7 +51,7 @@ def cast_list_int(cell: str) -> List[int]:
     return items
 
 
-PREFIX = "cs161extensions_"
+PREFIX = "FLEXTENSIONS_"
 
 
 class Environment:
@@ -79,6 +79,22 @@ class Environment:
         if not os.getenv(PREFIX + key):
             raise ConfigurationError("Environment variable not set: " + key)
         return os.getenv(PREFIX + key)
+    
+    @staticmethod
+    def get_email_from() -> str:
+        return str(Environment.get("EMAIL_FROM"))
+    
+    @staticmethod
+    def get_email_signature() -> str:
+        return str(Environment.safe_get("EMAIL_SIGNATURE", "Data 000 Staff"))
+    
+    @staticmethod
+    def get_email_subject() -> str:
+        return str(Environment.safe_get("EMAIL_SUBJECT", "[DATA 000] Extension Request Update"))
+    
+    @staticmethod
+    def get_email_reply_to() -> str:
+        return str(Environment.get("EMAIL_REPLY_TO"))
 
     @staticmethod
     def get_auto_approve_threshold() -> int:
@@ -87,6 +103,10 @@ class Environment:
     @staticmethod
     def get_auto_approve_threshold_dsp() -> int:
         return int(Environment.get("AUTO_APPROVE_THRESHOLD_DSP"))
+    
+    @staticmethod
+    def get_auto_approve_assignment_threshold() -> int:
+        return int(Environment.get("AUTO_APPROVE_ASSIGNMENT_THRESHOLD"))
 
     @staticmethod
     def get_max_total_requested_extensions_threshold() -> int:
@@ -96,8 +116,8 @@ class Environment:
         return int(Environment.safe_get("MAX_TOTAL_REQUESTED_EXTENSIONS_THRESHOLD", default=-1))
 
     @staticmethod
-    def get_auto_approve_assignment_threshold() -> int:
-        return int(Environment.get("AUTO_APPROVE_ASSIGNMENT_THRESHOLD"))
+    def get_extend_gradescope_assignments() -> bool:
+        return cast_bool(Environment.safe_get("EXTEND_GRADESCOPE_ASSIGNMENTS", "No"))
 
     @staticmethod
     def get_course_name() -> str:
@@ -120,6 +140,7 @@ class Environment:
         # Load local environment variables now from .env, which override remote provided variables for debugging
         if os.path.exists(".env-pytest"):
             for key, value in dotenv_values(".env-pytest").items():
+                # TODO: is this still needed?
                 if key == "APP_MASTER_SECRET":
                     os.environ[key] = value
                 else:
