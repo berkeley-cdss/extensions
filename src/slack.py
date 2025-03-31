@@ -20,11 +20,14 @@ class SlackManager:
         self.warnings = []
         self.silent = False
 
-        if Environment.contains("SLACK_ENDPOINT"):
-            self.webhooks.append(WebhookClient(Environment.get("SLACK_ENDPOINT")))
-        if Environment.contains("SLACK_ENDPOINT_DEBUG"):
-            if Environment.get("SLACK_ENDPOINT_DEBUG") != Environment.get("SLACK_ENDPOINT"):
-                self.webhooks.append(WebhookClient(Environment.get("SLACK_ENDPOINT_DEBUG")))
+        webhook = Environment.get_slack_endpoint()
+        debug_webhook = Environment.get_slack_debug_endpoint()
+        
+        if webhook:
+            self.webhooks.append(WebhookClient(webhook))
+        if debug_webhook and debug_webhook != webhook:
+            self.webhooks.append(WebhookClient(debug_webhook))
+
         # after Slack configuration if there is no webhook then suppress any Slack action
         if not self.webhooks:
             # TODO: send warning that no slack endpoint is set up, printing log to GCP instead
@@ -83,7 +86,7 @@ class SlackManager:
 
     @staticmethod
     def get_tags() -> str:
-        slack_tags = Environment.safe_get("SLACK_TAG_LIST")
+        slack_tags = Environment.get_slack_tag_list()
         prefix = ""
         if slack_tags:
             uids = cast_list_str(slack_tags)
@@ -137,7 +140,7 @@ class SlackManager:
                                 {
                                     "type": "button",
                                     "text": {"type": "plain_text", "text": "View Spreadsheet"},
-                                    "url": Environment.get("SPREADSHEET_URL"),
+                                    "url": Environment.get_spreadsheet_url(),
                                 },
                             ],
                         },

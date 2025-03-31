@@ -11,6 +11,9 @@ from src.sheets import Sheet
 
 PST = timezone("US/Pacific")
 
+DEFAULT_EMAIL_SIGNATURE = "DATA 000 Staff"
+DEFAULT_EMAIL_SUBJECT   = "[DATA 000] Extension Request Update"
+
 
 def cast_bool(cell: str) -> bool:
     cell = str(cell).strip()
@@ -83,18 +86,22 @@ class Environment:
     @staticmethod
     def get_email_from() -> str:
         return str(Environment.get("EMAIL_FROM"))
+
+    @staticmethod
+    def get_email_cc() -> Optional[str]:
+        return Environment.safe_get("EMAIL_CC")
     
     @staticmethod
     def get_email_signature() -> str:
-        return str(Environment.safe_get("EMAIL_SIGNATURE", "Data 000 Staff"))
+        return Environment.safe_get("EMAIL_SIGNATURE", DEFAULT_EMAIL_SIGNATURE)
     
     @staticmethod
     def get_email_subject() -> str:
-        return str(Environment.safe_get("EMAIL_SUBJECT", "[DATA 000] Extension Request Update"))
+        return Environment.safe_get("EMAIL_SUBJECT", DEFAULT_EMAIL_SUBJECT)
     
     @staticmethod
     def get_email_reply_to() -> str:
-        return str(Environment.get("EMAIL_REPLY_TO"))
+        return Environment.get("EMAIL_REPLY_TO")
 
     @staticmethod
     def get_auto_approve_threshold() -> int:
@@ -114,14 +121,38 @@ class Environment:
         # If this number is 0, then reject all extensions.
         # If this number is > 0, then reject extensions if the total number of extensions requested exceeds this number.
         return int(Environment.safe_get("MAX_TOTAL_REQUESTED_EXTENSIONS_THRESHOLD", default=-1))
+    
+    @staticmethod
+    def get_slack_endpoint() -> Optional[str]:
+        return Environment.safe_get("SLACK_ENDPOINT")
+    
+    @staticmethod
+    def get_slack_debug_endpoint() -> Optional[str]:
+        return Environment.safe_get("SLACK_DEBUG_ENDPOINT")
+    
+    @staticmethod
+    def get_slack_tag_list() -> Optional[str]:
+        return Environment.safe_get("SLACK_TAG_LIST")
 
     @staticmethod
     def get_extend_gradescope_assignments() -> bool:
         return cast_bool(Environment.safe_get("EXTEND_GRADESCOPE_ASSIGNMENTS", "No"))
+    
+    @staticmethod
+    def get_gradescope_email() -> Optional[str]:
+        return Environment.safe_get("GRADESCOPE_EMAIL")
+    
+    @staticmethod
+    def get_gradescope_password() -> Optional[str]:
+        return Environment.safe_get("GRADESCOPE_PASSWORD")
 
     @staticmethod
-    def get_course_name() -> str:
-        return str(Environment.safe_get("COURSE_NAME", ""))
+    def get_spreadsheet_url() -> Optional[str]:
+        return Environment.safe_get("SPREADSHEET_URL")
+
+    @staticmethod
+    def get_course_name() -> Optional[str]:
+        return Environment.safe_get("COURSE_NAME")
 
     @staticmethod
     def configure_env_vars(sheet: Sheet):

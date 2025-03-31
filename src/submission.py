@@ -32,7 +32,7 @@ class FormSubmission:
                 self.responses[key] = str(form_payload[question][0])
 
         self.responses["Timestamp"] = form_payload["Timestamp"][0]
-        self.responses["Course Name"] = Environment.get_course_name()
+        # self.responses["Course Name"] = Environment.get_course_name()
         print(self.responses)
 
     def get_timestamp(self) -> str:

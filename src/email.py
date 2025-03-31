@@ -86,21 +86,22 @@ class Email:
         body += "\n\n"
         body += "Best,"
         body += "\n\n"
-        body += Environment.get(ENV_EMAIL_SIGNATURE)
+        body += Environment.get_email_signature()
         body += "\n\n"
         body += (
             "Disclaimer: This is an auto-generated email. We may follow up with you in"
             + " this thread, and feel free to reply to this thread if you'd like to follow up with us!"
         )
 
-        cc_emails = cast_list_str(Environment.safe_get(ENV_EMAIL_CC, ""))
+        cc_emails = Environment.get_email_cc()
+        cc_emails = cast_list_str(cc_emails) if cc_emails else []
 
         return cls(
             to_email=student.get_email(),
-            from_email=Environment.get(ENV_EMAIL_FROM),
+            from_email=Environment.get_email_from(),
             cc_emails=cc_emails,
-            reply_to_email=Environment.get(ENV_EMAIL_REPLY_TO),
-            subject=Environment.get(ENV_EMAIL_SUBJECT),
+            reply_to_email=Environment.get_email_reply_to(),
+            subject=Environment.get_email_subject(),
             body=body,
         )
 
@@ -140,7 +141,7 @@ class Email:
         smtp_password = os.environ['SMTP_PASSWORD']
         sender_email = os.environ['SENDER_EMAIL']
 
-        SENDERNAME = Environment.get(ENV_EMAIL_FROM)
+        SENDERNAME = Environment.get_email_from()
         receiver_email = self.to_email
         cc_emails = self.cc_emails
         reply_to_email = self.reply_to_email

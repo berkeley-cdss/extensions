@@ -163,20 +163,20 @@ class StudentRecord:
         warnings = []
         for assignment in assignments:
             num_days = self.get_request(assignment_id=assignment.get_id())
-            course_name = Environment.safe_get("COURSE_NAME", "")
+            course_name = Environment.get_course_name()
 
             if num_days:
 
                 if len(assignment.get_gradescope_assignment_urls()) == 0:
                     print(
                         "[{}{}] could not extend assignment deadline for {} (assignment URL's not set).".format(
-                            course_name + " ", assignment.get_name(), self.get_email()))
+                            course_name + ' ' if course_name else '', assignment.get_name(), self.get_email()))
                     continue
 
                 elif not assignment.get_due_date():
                     warnings.append(
-                        "[{} {}] could not extend assignment deadline for {} (deadline not set).".format(
-                            course_name + " ", assignment.get_name(), self.get_email()))
+                        "[{}{}] could not extend assignment deadline for {} (deadline not set).".format(
+                            course_name + ' ' if course_name else '', assignment.get_name(), self.get_email()))
                     continue
 
                 else:

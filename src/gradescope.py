@@ -13,8 +13,8 @@ class Gradescope:
     """
 
     def __init__(self) -> None:
-        email = Environment.get("GRADESCOPE_EMAIL")
-        password = Environment.get("GRADESCOPE_PASSWORD")
+        email = Environment.get_gradescope_email()
+        password = Environment.get_gradescope_password()
 
         try:
             self.client = GradescopeClient(email=email, password=password)
@@ -23,15 +23,15 @@ class Gradescope:
 
     @staticmethod
     def is_enabled():
-        return cast_bool(Environment.safe_get("EXTEND_GRADESCOPE_ASSIGNMENTS", "No"))
+        return Environment.get_extend_gradescope_assignments()
 
     def apply_extension(self, assignment_name: str, assignment_urls: List[str], email: str, num_days: int) -> List[str]:
         warnings = []
-        course_name = Environment.safe_get('COURSE_NAME', '')
+        course_name = Environment.get_course_name()
 
         for assignment_url in assignment_urls:
             prefix = '[{}] [{}{}] [{}] [{}] '.format(
-                email, course_name + ' ', assignment_name, assignment_url, num_days)
+                email, course_name + ' ' if course_name else '', assignment_name, assignment_url, num_days)
             print("Extending: " + prefix)
             try:
                 course = self.client.get_course(course_url=assignment_url)
