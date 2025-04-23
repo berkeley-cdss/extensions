@@ -1,4 +1,5 @@
 from typing import List
+import logging 
 
 from slack_sdk.webhook import WebhookClient, WebhookResponse
 from tabulate import tabulate
@@ -31,6 +32,7 @@ class SlackManager:
         # after Slack configuration if there is no webhook then suppress any Slack action
         if not self.webhooks:
             # TODO: send warning that no slack endpoint is set up, printing log to GCP instead
+            logging.warning("Failed to set up Slack as no webhook is provided.")
             self.silent = True
 
     def suppress(self):

@@ -1,4 +1,5 @@
 from typing import Any, Dict, List, Optional
+import logging
 
 from src.assignments import AssignmentList
 from src.email import Email
@@ -276,17 +277,20 @@ class Policy:
             email = Email.from_student_record(student=target, assignments=self.assignments)
             email.send()
         except Exception as err:
-            print(err)
             self.slack.add_warning(
                 "Writes to spreadsheet succeed, but email to student failed.\n"
                 + "Please follow up with this student manually and/or check email logs.\n"
                 + "Error: "
                 + str(err)
             )
+            logging.warning(f"Failed to send email: error=\"{err}\"")
 
     def extend_assignments(self, target: StudentRecord):
         if Gradescope.is_enabled():
-            client = Gradescope()
-            warnings = target.apply_extensions(assignments=self.assignments, gradescope=client)
-            for warning in warnings:
-                self.slack.add_warning(warning)
+            try:
+                client = Gradescope()
+                warnings = target.apply_extensions(assignments=self.assignments, gradescope=client)
+                for warning in warnings:
+                    self.slack.add_warning(warning)
+            except Exception as e:
+                logging.warning(e)

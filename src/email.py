@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import logging
 from datetime import datetime, timedelta
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -136,10 +137,13 @@ class Email:
     def send(self) -> None:
         PORT = 465  # For starttls
 
-        SMTP_HOST = os.environ['SMTP_HOST']
-        smtp_username = os.environ['SMTP_USERNAME']
-        smtp_password = os.environ['SMTP_PASSWORD']
-        sender_email = os.environ['SENDER_EMAIL']
+        try:
+            SMTP_HOST = os.environ['SMTP_HOST']
+            smtp_username = os.environ['SMTP_USERNAME']
+            smtp_password = os.environ['SMTP_PASSWORD']
+            sender_email = os.environ['SENDER_EMAIL']
+        except Exception as e:
+            raise RuntimeError(f"Missing SMTP server configuration(s) on developer's side: {e}")
 
         SENDERNAME = Environment.get_email_from()
         receiver_email = self.to_email
@@ -174,4 +178,4 @@ class Email:
             server.login(smtp_username, smtp_password)
             server.sendmail(sender_email, [receiver_email]+cc_emails, msg.as_string())
             server.close()
-            print("Email sent!")
+            logging.info(f"Extension confirmation email sent to {receiver_email}.")

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
+import logging
 from typing import Any, Dict, List, Optional
 
 from dateutil.parser import parse
@@ -168,19 +169,21 @@ class StudentRecord:
             if num_days:
 
                 if len(assignment.get_gradescope_assignment_urls()) == 0:
-                    print(
-                        "[{}{}] could not extend assignment deadline for {} (assignment URL's not set).".format(
-                            course_name + ' ' if course_name else '', assignment.get_name(), self.get_email()))
+                    warning = "[{}{}] could not extend assignment deadline for {} on Gradescope (assignment URL's not set).".format(
+                            course_name + ' ' if course_name else '', assignment.get_name(), self.get_email())
+                    warnings.append(warning)
+                    logging.warning(warning)
                     continue
 
                 elif not assignment.get_due_date():
-                    warnings.append(
-                        "[{}{}] could not extend assignment deadline for {} (deadline not set).".format(
-                            course_name + ' ' if course_name else '', assignment.get_name(), self.get_email()))
+                    warning = "[{}{}] could not extend assignment deadline for {} on Gradescope (deadline not set).".format(
+                        course_name + ' ' if course_name else '', assignment.get_name(), self.get_email())
+                    warnings.append(warning)
+                    logging.warning(warning)
                     continue
 
                 else:
-                    print("Extending assignments: [{}{}] {}".format(
+                    logging.info("Extending assignments: [{}{}] {}".format(
                         course_name + " ", assignment.get_name(), str(assignment.get_gradescope_assignment_urls())))
                     warnings = gradescope.apply_extension(
                         assignment_name=assignment.get_name(),
