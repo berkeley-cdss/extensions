@@ -24,6 +24,7 @@ class Assignment:
         hard_due_date: Optional[datetime],
         partner: bool,
         gradescope: List[str],
+        pensieve: List[str],
     ) -> None:
         self.name = name
         self.id = id
@@ -31,6 +32,7 @@ class Assignment:
         self.hard_due_date = hard_due_date
         self.partner = partner
         self.gradescope = gradescope
+        self.pensieve = pensieve
 
     def is_past_due(self, request_time: str):
         """
@@ -67,6 +69,9 @@ class Assignment:
     def get_gradescope_assignment_urls(self) -> List[str]:
         return self.gradescope
 
+    def get_pensieve_assignment_urls(self) -> List[str]:
+        return self.pensieve
+
 
 class AssignmentList:
     """
@@ -86,6 +91,7 @@ class AssignmentList:
                         hard_due_date=cast_date(row.get("hard_due_date", ""), optional=True),
                         partner=cast_bool(row["partner"]),
                         gradescope=cast_list_str(row.get("gradescope", "")),
+                        pensieve=cast_list_str(row.get("pensieve", "")),
                     )
                 )
 

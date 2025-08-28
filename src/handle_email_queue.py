@@ -5,9 +5,12 @@ from src.email import Email
 from src.environment import Environment
 from src.errors import ConfigurationError
 from src.gradescope import Gradescope
+from src.pensieve import Pensieve
 from src.record import EMAIL_STATUS_IN_QUEUE, StudentRecord
-from src.sheets import SHEET_ASSIGNMENTS, SHEET_ENVIRONMENT_VARIABLES, SHEET_STUDENT_RECORDS, BaseSpreadsheet
+from src.sheets import (SHEET_ASSIGNMENTS, SHEET_ENVIRONMENT_VARIABLES,
+                        SHEET_STUDENT_RECORDS, BaseSpreadsheet)
 from src.slack import SlackManager
+
 
 def handle_email_queue(request_json):
     if "spreadsheet_url" not in request_json:
@@ -52,6 +55,12 @@ def handle_email_queue(request_json):
             if Gradescope.is_enabled():
                 client = Gradescope()
                 warnings = student.apply_extensions(assignments=assignments, gradescope=client)
+                for warning in warnings:
+                    slack.add_warning(warning)
+
+            if Pensieve.is_enabled():
+                pensieve_client = Pensieve()
+                warnings = student.apply_extensions_pensieve(assignments=assignments, pensieve=pensieve_client)
                 for warning in warnings:
                     slack.add_warning(warning)
 

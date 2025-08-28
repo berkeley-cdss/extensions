@@ -2,6 +2,7 @@ import os
 from typing import Optional
 
 from dotenv import dotenv_values
+
 from src.sheets import Sheet
 
 PREFIX = "flextensions_"
@@ -19,6 +20,7 @@ DEFAULT_EMAIL_SUBJECT = "[CS 000] Extension Request Update"
 DEFAULT_EMAIL_SIGNATURE = "{} Staff".format(DEFAULT_COURSE_NAME)
 
 DEFAULT_EXTEND_GRADESCOPE_ASSIGNMENTS = "No"
+DEFAULT_EXTEND_PENSIEVE_ASSIGNMENTS = "No"
 
 class Environment:
     @staticmethod
@@ -109,6 +111,18 @@ class Environment:
     @staticmethod
     def get_gradescope_password() -> Optional[str]:
         return Environment._safe_get("GRADESCOPE_PASSWORD")
+
+    @staticmethod
+    def get_extend_pensieve_assignments() -> Optional[str]:
+        return Environment._safe_get("EXTEND_PENSIEVE_ASSIGNMENTS", DEFAULT_EXTEND_PENSIEVE_ASSIGNMENTS)
+
+    @staticmethod
+    def get_pensieve_email() -> Optional[str]:
+        return Environment._safe_get("PENSIEVE_EMAIL")
+
+    @staticmethod
+    def get_pensieve_api_token() -> Optional[str]:
+        return Environment._safe_get("PENSIEVE_API_TOKEN")
 
     @staticmethod
     def get_spreadsheet_url() -> Optional[str]:

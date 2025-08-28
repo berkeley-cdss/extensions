@@ -10,10 +10,9 @@ from src.assignments import AssignmentList
 from src.environment import Environment
 from src.errors import StudentRecordError
 from src.gradescope import Gradescope
+from src.pensieve import Pensieve
 from src.sheets import Sheet
-from src.utils import cast_bool 
-
-import json
+from src.utils import cast_bool
 
 APPROVAL_STATUS_REQUESTED_MEETING = "Requested Meeting"
 APPROVAL_STATUS_PENDING = "Pending"
@@ -101,7 +100,16 @@ class StudentRecord:
         if "flush_gradescope" in self.sheet.get_headers():
             self.queue_write_back(col_key="flush_gradescope", col_value=False)
 
-    def count_requests(self, assignments=AssignmentList):
+    def should_flush_pensieve(self):
+        if "flush_pensieve" in self.sheet.get_headers():
+            return cast_bool(self.table_record["flush_pensieve"])
+        return False
+
+    def set_flush_pensieve_status_success(self):
+        if "flush_pensieve" in self.sheet.get_headers():
+            self.queue_write_back(col_key="flush_pensieve", col_value=False)
+
+    def count_requests(self, assignments: AssignmentList) -> int:
         count = 0
         for assignment_id in assignments.get_all_ids():
             if self.get_request(assignment_id=assignment_id) is not None:
@@ -141,7 +149,7 @@ class StudentRecord:
         if self.table_index == -1:
             values = [self.write_queue.get(header) for header in headers]
             # minus 1 to account for header row
-            self.table_index = self.sheet.num_entries - 1 
+            self.table_index = self.sheet.num_entries - 1
             self.sheet.append_row(values=values, value_input_option="USER_ENTERED")
 
             # Update local table_record object for email.
@@ -164,7 +172,7 @@ class StudentRecord:
         warnings = []
         for assignment in assignments:
             num_days = self.get_request(assignment_id=assignment.get_id())
-            course_name = Environment.safe_get("COURSE_NAME", "")
+            course_name = Environment.get_course_name()
 
             if num_days:
 
@@ -190,6 +198,40 @@ class StudentRecord:
                         num_days=num_days,
                     )
                     warnings.extend(warnings)
+
+        return warnings
+
+    def apply_extensions_pensieve(self, assignments: AssignmentList, pensieve: Pensieve) -> List[str]:
+
+        warnings = []
+        for assignment in assignments:
+            num_days = self.get_request(assignment_id=assignment.get_id())
+            course_name = Environment.get_course_name()
+
+            if num_days:
+
+                if len(assignment.get_pensieve_assignment_urls()) == 0:
+                    print(
+                        "[{}{}] could not extend assignment deadline for {} (assignment URL's not set).".format(
+                            course_name + " ", assignment.get_name(), self.get_email()))
+                    continue
+
+                elif not assignment.get_due_date():
+                    warnings.append(
+                        "[{} {}] could not extend assignment deadline for {} (deadline not set).".format(
+                            course_name + " ", assignment.get_name(), self.get_email()))
+                    continue
+
+                else:
+                    print("Extending assignments (Pensieve): [{}{}] {}".format(
+                        course_name + " ", assignment.get_name(), str(assignment.get_pensieve_assignment_urls())))
+                    pensieve_warnings = pensieve.apply_extension(
+                        assignment_name=assignment.get_name(),
+                        assignment_urls=assignment.get_pensieve_assignment_urls(),
+                        email=self.get_email(),
+                        num_days=num_days,
+                    )
+                    warnings.extend(pensieve_warnings)
 
         return warnings
 
